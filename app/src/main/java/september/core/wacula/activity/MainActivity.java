@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import september.core.wacula.R;
 import september.core.wacula.fragment.AppLogoFragment;
 
@@ -59,25 +62,40 @@ public class MainActivity extends ActionBarActivity {
 
         toolbarBottom.inflateMenu(R.menu.menu_main);
         setupEvenlyDistributedToolbar();
-        //toolbarBottom.setOnMenuItemClickListener(this);
+
+        for(MenuItem item: getMenuAsList()) {
+            item.setVisible(item.getItemId() != R.id.action_home);
+        }
 
         //enableDisableMenuItems();
         return true;
     }
 
+    private List<MenuItem> getMenuAsList() {
+        List<MenuItem> retlist = new ArrayList<MenuItem>();
+
+        for(int x = 0 ; x< toolbar.getMenu().size(); x++) {
+            retlist.add(toolbar.getMenu().getItem(x));
+        }
+        return retlist;
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        for(MenuItem item: getMenuAsList()) {
+            item.setVisible(menuItem.getItemId() != item.getItemId());
         }
 
-        return super.onOptionsItemSelected(item);
+
+
+
+
+        return super.onOptionsItemSelected(menuItem);
     }
 
     public void setupEvenlyDistributedToolbar(){
@@ -129,4 +147,6 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
+
+
 }
